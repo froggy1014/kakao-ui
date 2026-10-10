@@ -1,0 +1,36 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Kakao/Introduction" />
+
+# Kakao UI
+
+An **unofficial** shadcn/ui registry of KakaoTalk mobile (iOS) components, plus
+Kakao Biz Message previews (알림톡 AlimTalk, 브랜드메시지 Brand Message).
+Not affiliated with or endorsed by Kakao Corp.
+
+## Where to look
+
+| Section | What it covers |
+|---|---|
+| **Screens** | Full screens in an iPhone frame: 1:1 chat, group chat, chats tab, AlimTalk channel, Brand Message channel, custom theme background |
+| **ChatBubble / MessageGroup** | Tail on the first bubble, yellow unread count, time on the last bubble, "수정됨" |
+| **ProfileAvatar** | Squircle, default silhouette, 2–4 member group composites |
+| **ChatHeader / MessageInput** | Chat-room and tab headers; compose bar with `#` → send swap |
+| **DateSeparator / SystemMessage** | Date pill, join/leave/invite/deleted notices |
+| **ChatListItem** | Chats tab row with mute, pin, red unread badge, `render` polymorphism |
+| **BizMessage** | AlimTalk (BA/EX/AD/MI × NONE/TEXT/IMAGE/ITEM_LIST), Brand Message (TEXT/IMAGE/WIDE/CAROUSEL_FEED), buttons, coupons, length limits |
+| **Tokens** | Every color token with its evidence grade |
+
+Use the **Theme** toolbar to switch light / dark.
+
+## Evidence grades
+
+No official KakaoTalk design system is public. Each token is tagged:
+
+- **O** official — developers.kakao.com (`#FEE500`, label `#000` 85%)
+- **T** official theme-creation spec — bubble structure, paddings, alpha values
+- **C** approximation from public clones
+- **D** measured on device (iOS @3x capture)
+- **M** pending on-device measurement
+
+See `DESIGN.md` for sources.

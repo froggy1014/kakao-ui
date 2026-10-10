@@ -1,0 +1,103 @@
+import { AlimtalkBubble } from "@/components/ui/kakao/alimtalk-bubble";
+import { BizButton } from "@/components/ui/kakao/biz-button";
+import { BrandMessageBubble } from "@/components/ui/kakao/brand-message-bubble";
+import { ChatBubble } from "@/components/ui/kakao/chat-bubble";
+import { ChatHeader } from "@/components/ui/kakao/chat-header";
+import { ChatListItem } from "@/components/ui/kakao/chat-list-item";
+import { ChatRoom } from "@/components/ui/kakao/chat-room";
+import { DateSeparator } from "@/components/ui/kakao/date-separator";
+import { MessageGroup } from "@/components/ui/kakao/message-group";
+import { MessageInput } from "@/components/ui/kakao/message-input";
+import { ProfileAvatar } from "@/components/ui/kakao/profile-avatar";
+import { SystemMessage } from "@/components/ui/kakao/system-message";
+
+const S = (n: string) => `/samples/${n}.svg`;
+const MINJI = { name: "김민지", avatar: S("avatar-minji") };
+const SHOP = { name: "미리마켓", avatar: S("channel-shop") };
+
+const PREVIEWS: Record<string, () => React.ReactNode> = {
+  "chat-bubble": () => (
+    <div className="flex flex-col gap-1">
+      <ChatBubble showTail timestamp="오후 2:14">점심 뭐 먹을까요?</ChatBubble>
+      <ChatBubble variant="outgoing" showTail unreadCount={1} timestamp="오후 2:15">
+        국밥 어때요?
+      </ChatBubble>
+    </div>
+  ),
+  "message-group": () => (
+    <MessageGroup sender={MINJI} timestamp="오후 12:03">
+      <ChatBubble>점심 뭐 먹어?</ChatBubble>
+      <ChatBubble>덮밥 어때</ChatBubble>
+    </MessageGroup>
+  ),
+  "profile-avatar": () => (
+    <div className="flex items-center gap-3">
+      <ProfileAvatar src={MINJI.avatar} size="lg" />
+      <ProfileAvatar size="lg" />
+      <ProfileAvatar src={[S("avatar-minji"), S("avatar-junho"), S("avatar-seoyeon"), S("avatar-dohyun")]} size="lg" />
+    </div>
+  ),
+  "chat-header": () => (
+    <div className="-mx-4 overflow-hidden">
+      <ChatHeader title="주말 등산 모임" memberCount={6} unreadTotal={23} />
+    </div>
+  ),
+  "message-input": () => (
+    <div className="-mx-4">
+      <MessageInput defaultValue="지금 출발해요" />
+    </div>
+  ),
+  "date-separator": () => <DateSeparator date="2026년 10월 11일 일요일" />,
+  "system-message": () => <SystemMessage>김민지님이 들어왔습니다.</SystemMessage>,
+  "chat-list-item": () => (
+    <div className="-mx-4">
+      <ChatListItem name="김민지" avatar={MINJI.avatar} lastMessage="내일 몇 시에 볼까?" timestamp="오후 2:14" unreadCount={2} />
+    </div>
+  ),
+  "chat-room": () => (
+    <div className="-mx-4 -my-4 h-[200px]">
+      <ChatRoom header={<ChatHeader title="김민지" />}>
+        <MessageGroup variant="outgoing" timestamp="오후 2:15">
+          <ChatBubble>ChatRoom = header + log + input</ChatBubble>
+        </MessageGroup>
+      </ChatRoom>
+    </div>
+  ),
+  "biz-button": () => (
+    <div className="flex flex-col gap-1.5">
+      <BizButton type="WL" name="주문 내역 보기" />
+      <BizButton type="DS" name="배송 조회" />
+    </div>
+  ),
+  "alimtalk-bubble": () => (
+    <MessageGroup sender={SHOP}>
+      <AlimtalkBubble
+        emphasizeType="TEXT"
+        subtitle="배송 출발 안내"
+        title="오늘 도착 예정"
+        content="주문하신 상품이 배송을 시작했습니다."
+        buttons={[{ type: "DS", name: "배송 조회" }]}
+      />
+    </MessageGroup>
+  ),
+  "brand-message-bubble": () => (
+    <MessageGroup sender={SHOP}>
+      <BrandMessageBubble
+        isAd
+        content="가을 정기 세일 시작!"
+        coupon={{ title: "3,000원 할인 쿠폰", description: "5만원 이상" }}
+        buttons={[{ type: "WL", name: "세일 상품 보기" }]}
+      />
+    </MessageGroup>
+  ),
+};
+
+export function ComponentPreview({ name }: { name: string }) {
+  const render = PREVIEWS[name];
+  if (!render) return null;
+  return (
+    <div className="bg-kk-chat-bg flex min-h-[200px] items-center p-4">
+      <div className="w-full">{render()}</div>
+    </div>
+  );
+}
