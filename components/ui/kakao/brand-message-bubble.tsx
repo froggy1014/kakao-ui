@@ -60,7 +60,7 @@ const DEFAULT_OPT_OUT = "수신거부 | 홈 > 채널 차단";
 
 function CouponBox({ coupon, wide, limits }: { coupon: BrandCoupon; wide: boolean; limits: BrandMessageLimits }) {
   if (process.env.NODE_ENV !== "production" && !isValidCouponTitle(coupon.title)) {
-    console.warn(`[kakao-ui] coupon.title "${coupon.title}" doesn't match a Brand Message coupon format.`);
+    console.warn(`[katok-ui] coupon.title "${coupon.title}" doesn't match a Brand Message coupon format.`);
   }
   return (
     <button

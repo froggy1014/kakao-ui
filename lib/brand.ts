@@ -13,8 +13,8 @@ export const BRAND = {
   muted: "#8e8e8e",
 } as const;
 
-export const SITE_URL = "https://kakao-ui.jeongmin.dev";
-export const REPO_URL = "https://github.com/froggy1014/kakao-ui";
+export const SITE_URL = "https://katok-ui.jeongmin.dev";
+export const REPO_URL = "https://github.com/froggy1014/katok-ui";
 
 /** Rounded speech bubble with a tail, 24×24 viewBox. */
 export const LOGO_PATH =

@@ -1,6 +1,8 @@
 {
-  "name": "kakao-ui",
+  "name": "katok-ui",
   "version": "0.1.0",
+  "description": "Unofficial KakaoTalk (카카오톡) UI components and Kakao AlimTalk / Brand Message previews for shadcn/ui",
+  "keywords": ["kakao", "kakaotalk", "카카오톡", "카카오", "alimtalk", "알림톡", "shadcn", "react", "chat-ui"],
   "private": true,
   "packageManager": "pnpm@10.33.0",
   "pnpm": {

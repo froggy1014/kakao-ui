@@ -5,7 +5,7 @@ import { getRegistryItems } from "@/lib/registry";
 // Required by `output: "export"` — generated image routes must be prerendered.
 export const dynamic = "force-static";
 
-export const alt = "Kakao UI — unofficial KakaoTalk UI components for shadcn/ui";
+export const alt = "Katok UI — unofficial KakaoTalk UI components for shadcn/ui";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,7 +40,7 @@ export default function OpengraphImage() {
           >
             <img src={logoDataUri({ size: 40 })} width={40} height={40} alt="" />
           </div>
-          <div style={{ fontSize: 34, fontWeight: 700, color: BRAND.fg }}>Kakao UI</div>
+          <div style={{ fontSize: 34, fontWeight: 700, color: BRAND.fg }}>Katok UI</div>
           <div
             style={{
               display: "flex",
@@ -80,7 +80,7 @@ export default function OpengraphImage() {
             fontSize: 24,
           }}
         >
-          npx shadcn@latest add kakao-ui.jeongmin.dev/r/alimtalk-bubble.json
+          npx shadcn@latest add katok-ui.jeongmin.dev/r/alimtalk-bubble.json
         </div>
       </div>
     ),

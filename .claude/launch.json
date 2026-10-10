@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "kakao-ui dev",
+      "name": "katok-ui dev",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["dev"],
       "port": 3000,

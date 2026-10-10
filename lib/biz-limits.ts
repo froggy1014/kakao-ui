@@ -77,7 +77,7 @@ export function clampText(
   if (chars.length <= max) return text;
   if (process.env.NODE_ENV !== "production") {
     console.warn(
-      `[kakao-ui] ${field ?? "text"} exceeds ${max} characters (${chars.length}); truncated.`
+      `[katok-ui] ${field ?? "text"} exceeds ${max} characters (${chars.length}); truncated.`
     );
   }
   return chars.slice(0, Math.max(0, max - 1)).join("") + "…";
@@ -89,7 +89,7 @@ export function clampList<T>(list: T[] | undefined, max: number, field?: string)
   if (list.length <= max) return list;
   if (process.env.NODE_ENV !== "production") {
     console.warn(
-      `[kakao-ui] ${field ?? "list"} allows at most ${max} entries (${list.length}); extras dropped.`
+      `[katok-ui] ${field ?? "list"} allows at most ${max} entries (${list.length}); extras dropped.`
     );
   }
   return list.slice(0, max);

@@ -13,16 +13,20 @@ const mono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-const TITLE = "Kakao UI — KakaoTalk UI components for shadcn/ui";
+const TITLE = "Katok UI — KakaoTalk (카카오톡) UI components for shadcn/ui";
 const DESCRIPTION =
-  "Unofficial KakaoTalk mobile UI components for React — chat bubbles, chat list, message input, and AlimTalk / Brand Message previews. Tailwind CSS v4, light and dark mode.";
+  "Unofficial Kakao / KakaoTalk (카카오톡) mobile UI components for React — chat bubbles, chat list, message input, and Kakao AlimTalk (알림톡) / Brand Message (브랜드메시지) previews. Tailwind CSS v4, light and dark mode.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: TITLE,
   description: DESCRIPTION,
   keywords: [
+    "kakao ui",
     "kakaotalk ui",
+    "카카오 ui",
+    "카톡 ui",
+    "katok-ui",
     "카카오톡 ui",
     "알림톡 미리보기",
     "alimtalk preview",
@@ -35,7 +39,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: SITE_URL,
-    siteName: "Kakao UI",
+    siteName: "Katok UI",
     type: "website",
   },
   twitter: {

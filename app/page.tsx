@@ -83,7 +83,7 @@ export default function Home() {
                 <path d={LOGO_PATH} />
               </svg>
             </div>
-            <span className="text-sm font-semibold">Kakao UI</span>
+            <span className="text-sm font-semibold">Katok UI</span>
             <span className="rounded-full border border-page-border px-2 py-0.5 text-[10px] text-page-muted">unofficial</span>
           </div>
           <div className="flex items-center gap-3">

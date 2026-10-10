@@ -1,19 +1,21 @@
-# Kakao UI
+# Katok UI
 
-> An **unofficial** shadcn/ui registry of KakaoTalk mobile (iOS) components — plus the first open-source **AlimTalk (알림톡) and Brand Message (브랜드메시지) preview** components.
+> **KakaoTalk (카카오톡) UI components for React** — an unofficial shadcn/ui registry of Kakao / KakaoTalk mobile (iOS) chat UI, plus the first open-source **Kakao AlimTalk (카카오 알림톡) and Brand Message (브랜드메시지) preview** components.
+>
+> 카카오톡 채팅 UI(말풍선, 채팅 목록, 입력창)와 카카오 알림톡·브랜드메시지 미리보기를 React 컴포넌트로 제공하는 비공식 shadcn/ui 레지스트리입니다.
 
 If you send Kakao Biz Messages — from a SaaS dashboard, a CRM, or an internal admin — you need a preview that looks like what customers actually see in KakaoTalk. Teams keep rebuilding `AlimtalkPreview` from scratch. This registry gives you that, plus the core chat UI, ready to drop into a React app.
 
-**[Demo](https://kakao-ui.jeongmin.dev)** · **[Storybook](https://kakao-ui.jeongmin.dev/storybook)** · **[Registry](https://kakao-ui.jeongmin.dev/r/registry.json)**
+**[Demo](https://katok-ui.jeongmin.dev)** · **[Storybook](https://katok-ui.jeongmin.dev/storybook)** · **[Registry](https://katok-ui.jeongmin.dev/r/registry.json)**
 
-> Not affiliated with or endorsed by Kakao Corp. No Kakao logos, characters, or font files are included.
+> "Katok" (카톡) is the everyday nickname for KakaoTalk. Not affiliated with or endorsed by Kakao Corp. No Kakao logos, characters, or font files are included.
 
 ---
 
 ## Install
 
 ```bash
-npx shadcn@latest add https://kakao-ui.jeongmin.dev/r/alimtalk-bubble.json
+npx shadcn@latest add https://katok-ui.jeongmin.dev/r/alimtalk-bubble.json
 ```
 
 Each component is independent — it brings the files it needs (tokens, icons, shared bubble layout).

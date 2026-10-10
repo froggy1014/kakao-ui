@@ -1,4 +1,4 @@
-# Kakao UI — Design System
+# Katok UI — Design System
 
 Reconstructed tokens for **KakaoTalk iOS 26.x** (after the 25.11.0 rollback of the
 friends-tab feed). No official KakaoTalk design system is published, so every value

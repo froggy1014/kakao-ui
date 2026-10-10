@@ -103,7 +103,7 @@ export const ShortReplies: Story = {
 export const UnbrokenUrl: Story = {
   args: {
     variant: "outgoing",
-    children: "https://kakao-ui.jeongmin.dev/r/alimtalk-bubble.json?utm_source=kakaotalk&utm_medium=chat",
+    children: "https://katok-ui.jeongmin.dev/r/alimtalk-bubble.json?utm_source=kakaotalk&utm_medium=chat",
     timestamp: "오후 4:44",
   },
 };

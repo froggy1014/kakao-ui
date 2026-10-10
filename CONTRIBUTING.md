@@ -3,8 +3,8 @@
 ## Setup
 
 ```bash
-git clone https://github.com/froggy1014/kakao-ui
-cd kakao-ui
+git clone https://github.com/froggy1014/katok-ui
+cd katok-ui
 pnpm install
 pnpm storybook   # component development
 pnpm dev         # demo site
