@@ -7,3 +7,4 @@ out
 .gstack
 .context
 *.md
+public/reference

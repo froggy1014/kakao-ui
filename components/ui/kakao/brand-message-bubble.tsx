@@ -8,8 +8,8 @@ import {
   isValidCouponTitle,
 } from "@/lib/biz-limits";
 import { BizButton, type BizButtonData } from "./biz-button";
-import { BubbleRow, type BubbleRowProps } from "./chat-bubble";
-import { ChevronRightIcon, TicketIcon } from "./icons";
+import { BubbleMeta, BubbleRow, type BubbleRowProps } from "./chat-bubble";
+import { DownloadIcon } from "./icons";
 import "@/components/ui/kakao/styles/kakao.css";
 
 /**
@@ -38,7 +38,11 @@ interface BrandCarouselCard {
 
 interface BrandMessageBubbleProps extends Omit<BubbleRowProps, "content"> {
   chatBubbleType?: BrandMessageType;
-  /** Advertising message: prefixes "(광고)" and shows the opt-out footer. */
+  /**
+   * Advertising message: shows the opt-out line under the bubble. KakaoTalk
+   * puts "(광고)" before the sender name — pass it in `MessageGroup`'s
+   * `sender.name` (see `adSenderName`).
+   */
   isAd?: boolean;
   content?: string;
   image?: string;
@@ -66,13 +70,12 @@ function CouponBox({ coupon, wide, limits }: { coupon: BrandCoupon; wide: boolea
     <button
       type="button"
       onClick={coupon.onClick}
-      className="flex w-full items-center gap-[10px] rounded-[8px] bg-kk-biz-coupon-bg px-[12px] py-[10px] text-left outline-none focus-visible:ring-2 focus-visible:ring-kk-yellow"
+      className="relative flex w-full overflow-hidden rounded-[8px] border border-kk-biz-coupon-border bg-kk-biz-surface text-left outline-none focus-visible:ring-2 focus-visible:ring-kk-yellow"
     >
-      <TicketIcon size={20} strokeWidth={1.8} className="shrink-0 text-kk-biz-coupon-accent" />
-      <span className="min-w-0 flex-1">
-        <span className="block truncate text-[14px] font-bold text-kk-biz-emphasis">{coupon.title}</span>
+      <span className="min-w-0 flex-1 px-[12px] py-[9px]">
+        <span className="block truncate text-[15px] leading-[1.35] text-kk-biz-emphasis">{coupon.title}</span>
         {coupon.description && (
-          <span className="block truncate text-[12px] text-kk-biz-muted">
+          <span className="block truncate text-[13px] leading-[1.35] text-kk-biz-muted">
             {clampText(
               coupon.description,
               wide ? limits.couponDescriptionWide : limits.couponDescription,
@@ -81,7 +84,16 @@ function CouponBox({ coupon, wide, limits }: { coupon: BrandCoupon; wide: boolea
           </span>
         )}
       </span>
-      <ChevronRightIcon size={16} className="shrink-0 text-kk-biz-muted" />
+      {/* ticket stub: dashed tear line, notches, download panel */}
+      <span
+        aria-hidden
+        className="flex w-[44px] shrink-0 flex-col items-center justify-center gap-[2px] border-l border-dashed border-kk-biz-coupon-border bg-kk-biz-coupon-bg text-kk-biz-coupon-accent"
+      >
+        <DownloadIcon size={18} strokeWidth={2} />
+        <span className="text-[7px] font-bold tracking-[0.08em]">COUPON</span>
+      </span>
+      <span aria-hidden className="absolute -top-[5px] right-[39px] h-[10px] w-[10px] rounded-full border border-kk-biz-coupon-border bg-kk-chat-bg" />
+      <span aria-hidden className="absolute -bottom-[5px] right-[39px] h-[10px] w-[10px] rounded-full border border-kk-biz-coupon-border bg-kk-chat-bg" />
     </button>
   );
 }
@@ -115,9 +127,9 @@ function Buttons({
   );
 }
 
-function withAdPrefix(text: string | undefined, isAd: boolean) {
-  if (!isAd || !text || text.startsWith(AD_PREFIX)) return text;
-  return `${AD_PREFIX} ${text}`;
+/** KakaoTalk shows ad messages under "(광고) {channel name}". */
+function adSenderName(name: string) {
+  return name.startsWith(AD_PREFIX) ? name : `${AD_PREFIX} ${name}`;
 }
 
 const BrandMessageBubble = React.forwardRef<HTMLDivElement, BrandMessageBubbleProps>(
@@ -168,7 +180,7 @@ const BrandMessageBubble = React.forwardRef<HTMLDivElement, BrandMessageBubblePr
                 <div className="flex flex-1 flex-col gap-[10px] p-[12px]">
                   {card.header && (
                     <p className="line-clamp-2 text-[15px] font-bold leading-[1.3]">
-                      {withAdPrefix(clampText(card.header, limits.carouselHeader, "carousel.header"), isAd && ci === 0)}
+                      {clampText(card.header, limits.carouselHeader, "carousel.header")}
                     </p>
                   )}
                   {card.content && (
@@ -198,37 +210,69 @@ const BrandMessageBubble = React.forwardRef<HTMLDivElement, BrandMessageBubblePr
           : limits.textContent;
     const ratio = imageRatio ?? (isWide ? "4 / 3" : "2 / 1");
 
-    return (
-      <BubbleRow ref={ref} variant={variant} {...rowProps}>
-        <article
-          className={cn(
-            "flex flex-col overflow-hidden rounded-[var(--kk-radius-biz)] bg-kk-biz-surface text-kk-biz-emphasis",
-            isWide ? "w-[300px] max-w-[calc(100%-36px)]" : "w-[var(--kk-biz-width)] max-w-[calc(100%-40px)]"
+    const { timestamp, unreadCount, edited, showTail, className, ...restRowProps } = rowProps;
+    const optOut = isAd && optOutText && (
+      <p className="text-[11px] leading-[1.4] text-kk-biz-opt-out">{optOutText}</p>
+    );
+
+    const card = (
+      <article
+        className={cn(
+          "flex flex-col overflow-hidden rounded-[var(--kk-radius-biz)] bg-kk-biz-surface text-kk-biz-emphasis",
+          isWide ? "w-full" : "w-[var(--kk-biz-width)] max-w-[calc(100%-40px)]"
+        )}
+      >
+        {(chatBubbleType === "IMAGE" || isWide) && image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={image} alt={imageAlt} className="w-full object-cover" style={{ aspectRatio: ratio }} />
+        )}
+        <div className="flex flex-col gap-[12px] p-[12px]">
+          {content && (
+            <p className="whitespace-pre-wrap break-words break-keep text-[15px] leading-[1.45]">
+              {clampText(content, contentLimit, "content")}
+            </p>
           )}
+          <Buttons
+            buttons={buttons}
+            compact={isWide}
+            limits={limits}
+            onClick={onButtonClick ? (b, i) => onButtonClick(b, i) : undefined}
+          />
+          {coupon && <CouponBox coupon={coupon} wide={isWide} limits={limits} />}
+        </div>
+      </article>
+    );
+
+    // WIDE fills the row, so the opt-out line and the time drop below it.
+    if (isWide) {
+      return (
+        <div
+          ref={ref}
+          className={cn("font-kk flex w-full flex-col items-start gap-[3px]", className)}
+          {...restRowProps}
         >
-          {(chatBubbleType === "IMAGE" || isWide) && image && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={image} alt={imageAlt} className="w-full object-cover" style={{ aspectRatio: ratio }} />
-          )}
-          <div className="flex flex-col gap-[12px] p-[14px]">
-            {content && (
-              <p className="whitespace-pre-wrap break-words break-keep text-[14px] leading-[1.5]">
-                {withAdPrefix(clampText(content, contentLimit, "content"), isAd)}
-              </p>
-            )}
-            {coupon && <CouponBox coupon={coupon} wide={isWide} limits={limits} />}
-            <Buttons
-              buttons={buttons}
-              compact={isWide}
-              limits={limits}
-              onClick={onButtonClick ? (b, i) => onButtonClick(b, i) : undefined}
-            />
-            {isAd && optOutText && (
-              <p className="text-[11px] leading-[1.4] text-kk-biz-muted">{optOutText}</p>
-            )}
-          </div>
-        </article>
-      </BubbleRow>
+          {card}
+          {optOut}
+          <BubbleMeta variant={variant} timestamp={timestamp} unreadCount={unreadCount} edited={edited} />
+        </div>
+      );
+    }
+
+    return (
+      <div className={cn("flex w-full flex-col gap-[4px]", className)}>
+        <BubbleRow
+          ref={ref}
+          variant={variant}
+          timestamp={timestamp}
+          unreadCount={unreadCount}
+          edited={edited}
+          showTail={showTail}
+          {...restRowProps}
+        >
+          {card}
+        </BubbleRow>
+        {optOut}
+      </div>
     );
   }
 );
@@ -236,6 +280,7 @@ BrandMessageBubble.displayName = "BrandMessageBubble";
 
 export {
   BrandMessageBubble,
+  adSenderName,
   type BrandMessageBubbleProps,
   type BrandMessageType,
   type BrandButtonData,

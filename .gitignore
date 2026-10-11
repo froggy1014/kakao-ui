@@ -50,3 +50,6 @@ storybook-static
 
 
 
+
+# Kakao reference imagery (pnpm refs:fetch) — never commit or deploy
+/public/reference/

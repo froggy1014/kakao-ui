@@ -42,16 +42,40 @@ interface BizButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonEleme
   compact?: boolean;
 }
 
+/** Speech bubble with a plus — an original glyph, not Kakao's channel icon. */
+function ChannelAddIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="shrink-0">
+      <path
+        d="M7 2.5C3.96 2.5 1.5 4.42 1.5 6.8c0 1.5.98 2.82 2.46 3.59l-.5 1.86a.25.25 0 0 0 .38.27l2.2-1.46c.31.04.63.06.96.06 3.04 0 5.5-1.92 5.5-4.32S10.04 2.5 7 2.5Z"
+        fill="currentColor"
+      />
+      <path d="M13 9.5v5M10.5 12h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const BizButton = React.forwardRef<HTMLButtonElement, BizButtonProps>(
   ({ className, type, name, href, render, compact, ...props }, ref) => {
     const rootClassName = cn(
-      "font-kk flex min-h-[38px] w-full items-center justify-center rounded-[6px] bg-kk-biz-button-bg px-[10px] py-[8px]",
-      "text-center text-[14px] font-medium leading-[1.25] tracking-[-0.01em] text-kk-biz-button-fg",
+      "font-kk flex min-h-[40px] w-full items-center justify-center gap-[4px] rounded-[6px] px-[10px] py-[8px]",
+      "text-center text-[14px] leading-[1.25] tracking-[-0.01em]",
+      // 채널 추가 is the one yellow button (Kakao Business guide).
+      type === "AC" ? "bg-kk-yellow text-kk-on-yellow" : "bg-kk-biz-button-bg text-kk-biz-button-fg",
       "outline-none transition-[filter] hover:brightness-95 active:brightness-90 focus-visible:ring-2 focus-visible:ring-kk-yellow",
       compact && "min-w-0 flex-1 text-[13px]",
       className
     );
     const dataProps = { "data-button-type": type } as Record<string, string>;
+    const label =
+      type === "AC" ? (
+        <>
+          <ChannelAddIcon />
+          {name}
+        </>
+      ) : (
+        name
+      );
 
     if (render) {
       return React.cloneElement(
@@ -60,19 +84,19 @@ const BizButton = React.forwardRef<HTMLButtonElement, BizButtonProps>(
           className: cn((render.props as { className?: string }).className, rootClassName),
           ...dataProps,
         } as React.HTMLAttributes<HTMLElement>,
-        name
+        label
       );
     }
     if (href) {
       return (
         <a href={href} className={rootClassName} {...dataProps}>
-          {name}
+          {label}
         </a>
       );
     }
     return (
       <button ref={ref} type="button" className={rootClassName} {...dataProps} {...props}>
-        {name}
+        {label}
       </button>
     );
   }

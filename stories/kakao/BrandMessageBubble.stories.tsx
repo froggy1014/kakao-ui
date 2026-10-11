@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { fn } from "storybook/test";
-import { BrandMessageBubble } from "@/components/ui/kakao/brand-message-bubble";
+import { BrandMessageBubble, adSenderName } from "@/components/ui/kakao/brand-message-bubble";
 import { MessageGroup } from "@/components/ui/kakao/message-group";
 import { CHANNELS, IMG } from "./fixtures";
 
@@ -12,8 +12,10 @@ const meta: Meta<typeof BrandMessageBubble> = {
     chatBubbleType: { control: "inline-radio", options: ["TEXT", "IMAGE", "WIDE", "CAROUSEL_FEED"] },
   },
   decorators: [
-    (Story) => (
-      <MessageGroup sender={CHANNELS.shop}>
+    (Story, { args }) => (
+      <MessageGroup
+        sender={args.isAd ? { ...CHANNELS.shop, name: adSenderName(CHANNELS.shop.name) } : CHANNELS.shop}
+      >
         <Story />
       </MessageGroup>
     ),
@@ -30,7 +32,7 @@ export const Text: Story = {
   },
 };
 
-/** Ads get "(광고)" prefixed and the opt-out footer. */
+/** Ads show "(광고)" before the sender name and the opt-out line under the bubble. */
 export const TextAdWithCoupon: Story = {
   args: {
     chatBubbleType: "TEXT",

@@ -4,11 +4,17 @@ Reconstructed tokens for **KakaoTalk iOS 26.x** (after the 25.11.0 rollback of t
 friends-tab feed). No official KakaoTalk design system is published, so every value
 is graded by evidence. Replace **C** and **M** values as device measurements come in.
 
+The chat room follows the iOS 26 layout: the header is transparent with floating glass
+pills (back + unread count, search + menu), and the input is a floating pill with round
+`+`, emoji and `#` buttons. Compare against Kakao's own imagery in Storybook under
+**Kakao/Reference** after running `pnpm refs:fetch` (images stay local, see below).
+
 | Grade | Meaning | Source |
 |---|---|---|
 | **O** | Official | [Kakao Login design guide](https://developers.kakao.com/docs/latest/ko/kakaologin/design-guide) |
 | **T** | Official theme-creation spec | KakaoTalk user theme guide (Android 26.1.0 PDF) and sample iOS theme CSS (25.8.0) |
 | **C** | Clone approximation | Public KakaoTalk clones (majority value) |
+| **S** | Measured from Kakao's published imagery | KakaoTalk App Store screenshots (KR, light mode, rendered ≈2.35 px/pt) and Kakao Business AlimTalk / Brand Message guides (rendered 1.9 px/pt), 2026-10 |
 | **D** | Measured on device | KakaoTalk iOS, iPhone @3x capture (dark mode), 2026-10 |
 | **M** | Pending on-device measurement | Placeholder |
 
@@ -29,18 +35,30 @@ as `--kk-*` variables, exposed to Tailwind as `bg-kk-*`, `text-kk-*`.
 ### Chat room (`BackgroundStyle-ChatRoom`)
 | Token | Light | Dark | Grade |
 |---|---|---|---|
-| `--kk-chat-bg` | `#B2C7D9` | `#080808` | C / D |
+| `--kk-chat-bg` | `#ABC1D1` | `#080808` | S / D |
 | `--kk-chat-pill-bg` | `rgba(0,0,0,.15)` | `rgba(255,255,255,.12)` | C |
-| `--kk-chat-meta` (time) | `rgba(0,0,0,.45)` | `#9C9C9C` | M / D |
-| `--kk-chat-sender` (name) | `rgba(0,0,0,.72)` | `#CFCFCF` | M / D |
+| `--kk-chat-meta` (time) | `rgba(0,0,0,.5)` | `#9C9C9C` | S / D |
+| `--kk-chat-sender` (name) | `rgba(0,0,0,.88)` | `#CFCFCF` | S / D |
+| `--kk-glass-bg` (header pills) | `rgba(255,255,255,.22)` | `rgba(255,255,255,.17)` | S / D |
 
-Clone values for the chat background vary: `#B2C7D9` (majority), `#B2C7DA`, `#BACEE0`, `#9BBBD4`.
+Both the App Store screenshots and the Kakao Business guide render the default room as `#ABC1D1`;
+clones use `#B2C7D9` (majority), `#B2C7DA`, `#BACEE0`, `#9BBBD4`.
+
+### Input bar (`InputBarStyle-Chat`)
+| Token | Light | Dark | Grade |
+|---|---|---|---|
+| `--kk-input-bar-bg` (pill) | `#D8E7EF` | `#141414` | S / D |
+| `--kk-input-button-bg` (`+`, `#`) | `#FFFFFF` | `#2E2E2E` | S / D |
+| `--kk-input-emoji-bg` | `rgba(0,0,0,.1)` | `rgba(255,255,255,.11)` | S / D |
+| `--kk-input-placeholder` | `#8C9599` | `#6D6D6D` | S / D |
+
+Pill 48pt tall, 10pt from the screen edges; round buttons 32pt, emoji button 24pt (D).
 
 ### Bubbles (`MessageCellStyle-Send` / `-Receive`)
 | Token | Light | Dark | Grade |
 |---|---|---|---|
 | `--kk-bubble-outgoing` | `#FEE500` | `#FEE500` | O / C |
-| `--kk-bubble-incoming` | `#FFFFFF` | `#282828` | C / D |
+| `--kk-bubble-incoming` | `#FFFFFF` | `#282828` | S / D |
 | `--kk-bubble-*-fg` | `#191919` | `#191919` / `#F2F2F2` | T / D |
 | `--kk-unread` | `#FEE500` | `#FEE500` | C / D (theme slot `-ios-unread-text-color`) |
 
@@ -50,11 +68,21 @@ Clone values for the chat background vary: `#B2C7D9` (majority), `#B2C7DA`, `#BA
 | `--kk-list-title` | `#191919` | T |
 | `--kk-list-pressed` | `rgba(0,0,0,.05)` | T |
 | `--kk-divider` | `rgba(0,0,0,.09)` | T |
-| `--kk-badge` | `#FF5A3C` | M |
+| `--kk-list-description` / `-meta` | `#767676` | S |
+| `--kk-badge` | `#F4551E` | S |
 
 ### Biz Message
-`--kk-biz-band` (AlimTalk "알림톡 도착" band), `--kk-biz-button-bg`, `--kk-biz-coupon-*` — all **M**.
-No public document specifies how Biz Messages render; values come from screenshots.
+Measured from the Kakao Business content guides (**S**), which render the card 510px wide = 268pt.
+
+| Token / part | Value |
+|---|---|
+| `--kk-biz-band` | `#FEE500`, 40pt tall, 13px label, no icon |
+| `--kk-biz-badge` | round `#333` mark, 28pt, centered on the card's top-right corner (rendered as plain text "kakao", not the logotype) |
+| `--kk-biz-button-bg` | `#F5F5F5`, 40pt; the AC "채널 추가" button is yellow |
+| Card padding / body | 12pt / 15px |
+| Item list | header 15px bold + divider, highlight 16px + divider, items 13px, summary 18px bold + divider. With a summary, item values right-align |
+| `--kk-biz-coupon-*` | white ticket with `#EBEBEB` border, `#E6F1FB` download stub, `#0A73DC` arrow |
+| Brand Message ads | "(광고)" before the sender name; "수신거부 \| 홈 > 채널 차단" under the bubble |
 
 ---
 
@@ -70,7 +98,7 @@ No public document specifies how Biz Messages render; values come from screensho
 | `--kk-avatar-chat` / `-list` | `34px` / `48px` | D / C | |
 | `--kk-text-message` | `16px` / line `21px` | D | Default font-size setting; 1-line bubble is 35px tall |
 | `--kk-text-meta` | `10px` | C | |
-| `--kk-header-height` | `52px` | C | |
+| `--kk-header-height` | `60px` (44pt glass pills) | D | |
 | `--kk-msg-max-width` | `min(70%, 264px)` | C | |
 
 ## Typography
@@ -86,7 +114,14 @@ Kakao's own fonts (카카오 큰글씨 / 작은글씨, OFL, June 2025) can be sw
 - Brand Message: only WL / AL / AC buttons; TEXT and IMAGE stack up to 5, WIDE and
   CAROUSEL place up to 2 side by side with 8-char names; coupon titles use five formats.
 - Limits: [`lib/biz-limits.ts`](./lib/biz-limits.ts) — sources: NHN Cloud AlimTalk API v2.3,
-  Kakao Business content guide, Ncloud SENS, Solapi (checked 2026-10-11).
+  Kakao Business content guide, Ncloud SENS, Solapi (checked 2026-10-11). The AlimTalk body is
+  1,300 characters, or 1,000 with an item list; extra info + channel-add notice is 500, or 200.
+
+## Reference imagery
+
+`pnpm refs:fetch` downloads the App Store screenshots and the Kakao Business guide images
+into `public/reference/`. They belong to Kakao Corp., so that folder is git-ignored and
+excluded from the Docker build: the comparison pages work locally only.
 
 ## Principles
 

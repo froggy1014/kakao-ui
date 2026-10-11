@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { ArrowUpIcon, HashIcon, PlusIcon, SmileIcon } from "./icons";
+import { ArrowUpIcon, EmojiFaceIcon, HashIcon, PlusIcon } from "./icons";
 import "@/components/ui/kakao/styles/kakao.css";
 
 interface MessageInputProps
@@ -53,7 +53,7 @@ const MessageInput = React.forwardRef<HTMLTextAreaElement, MessageInputProps>(
       const el = localRef.current;
       if (!el) return;
       el.style.height = "auto";
-      el.style.height = `${Math.min(el.scrollHeight, LINE_HEIGHT * maxRows + 16)}px`;
+      el.style.height = `${Math.min(el.scrollHeight, LINE_HEIGHT * maxRows + 12)}px`;
     }, [text, maxRows]);
 
     const update = (next: string) => {
@@ -67,24 +67,24 @@ const MessageInput = React.forwardRef<HTMLTextAreaElement, MessageInputProps>(
       update("");
     };
 
-    return (
-      <div
-        className={cn(
-          "font-kk flex w-full items-end gap-[8px] bg-kk-input-bar-bg px-[10px] py-[8px]",
-          className
-        )}
-      >
-        <button
-          type="button"
-          aria-label="첨부"
-          onClick={onAttach}
-          disabled={disabled}
-          className="mb-[5px] flex h-[26px] w-[26px] shrink-0 items-center justify-center text-kk-input-icon outline-none hover:opacity-70 focus-visible:ring-2 focus-visible:ring-kk-yellow disabled:opacity-40"
-        >
-          <PlusIcon size={26} strokeWidth={1.6} />
-        </button>
+    const circle =
+      "flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-kk-yellow disabled:opacity-40";
 
-        <div className="flex min-w-0 flex-1 items-end rounded-[18px] bg-kk-input-field-bg pl-[14px] pr-[6px]">
+    // iOS 26 layout: a floating pill over the chat background with round
+    // "+" and "#" buttons; "#" turns into the yellow send button once typed.
+    return (
+      <div className={cn("font-kk w-full px-[10px] pb-[8px] pt-[6px]", className)}>
+        <div className="flex min-h-[48px] w-full items-end gap-[6px] rounded-[24px] border border-kk-input-border bg-kk-input-bar-bg p-[7px] shadow-[0_2px_12px_rgba(0,0,0,0.08)] backdrop-blur-xl">
+          <button
+            type="button"
+            aria-label="첨부"
+            onClick={onAttach}
+            disabled={disabled}
+            className={cn(circle, "bg-kk-input-button-bg text-kk-input-icon hover:opacity-80")}
+          >
+            <PlusIcon size={20} strokeWidth={2} />
+          </button>
+
           <textarea
             ref={localRef}
             rows={1}
@@ -99,41 +99,42 @@ const MessageInput = React.forwardRef<HTMLTextAreaElement, MessageInputProps>(
                 send();
               }
             }}
-            className="min-h-[36px] flex-1 resize-none bg-transparent py-[8px] text-[15px] leading-[20px] text-kk-text-primary outline-none placeholder:text-kk-input-placeholder"
+            className="min-h-[32px] min-w-0 flex-1 resize-none bg-transparent px-[4px] py-[6px] text-[16px] leading-[20px] text-kk-text-primary outline-none placeholder:text-kk-input-placeholder"
             {...props}
           />
+
           <button
             type="button"
             aria-label="이모티콘"
             onClick={onEmoji}
             disabled={disabled}
-            className="mb-[6px] flex h-[24px] w-[24px] shrink-0 items-center justify-center text-kk-input-icon outline-none hover:opacity-70 focus-visible:ring-2 focus-visible:ring-kk-yellow disabled:opacity-40"
+            className={cn(circle, "my-[4px] h-[24px] w-[24px] bg-kk-input-emoji-bg text-kk-input-icon hover:opacity-80")}
           >
-            <SmileIcon size={22} strokeWidth={1.6} />
+            <EmojiFaceIcon size={18} strokeWidth={2.4} />
           </button>
-        </div>
 
-        {hasText ? (
-          <button
-            type="button"
-            aria-label="전송"
-            onClick={send}
-            disabled={disabled}
-            className="mb-[2px] flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full bg-kk-send-bg text-kk-send-fg outline-none transition-transform active:scale-95 focus-visible:ring-2 focus-visible:ring-kk-gray-900"
-          >
-            <ArrowUpIcon size={18} strokeWidth={2.4} />
-          </button>
-        ) : (
-          <button
-            type="button"
-            aria-label="샵검색"
-            onClick={onHash}
-            disabled={disabled}
-            className="mb-[5px] flex h-[26px] w-[26px] shrink-0 items-center justify-center text-kk-input-icon outline-none hover:opacity-70 focus-visible:ring-2 focus-visible:ring-kk-yellow disabled:opacity-40"
-          >
-            <HashIcon size={22} strokeWidth={1.6} />
-          </button>
-        )}
+          {hasText ? (
+            <button
+              type="button"
+              aria-label="전송"
+              onClick={send}
+              disabled={disabled}
+              className={cn(circle, "bg-kk-send-bg text-kk-send-fg transition-transform active:scale-95")}
+            >
+              <ArrowUpIcon size={18} strokeWidth={2.4} />
+            </button>
+          ) : (
+            <button
+              type="button"
+              aria-label="샵검색"
+              onClick={onHash}
+              disabled={disabled}
+              className={cn(circle, "bg-kk-input-button-bg text-kk-input-icon hover:opacity-80")}
+            >
+              <HashIcon size={18} strokeWidth={2.2} />
+            </button>
+          )}
+        </div>
       </div>
     );
   }

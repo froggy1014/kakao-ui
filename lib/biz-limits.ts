@@ -1,15 +1,17 @@
 /**
  * Kakao Biz Message length limits.
  *
- * Sources disagree on some values (e.g. AlimTalk body 1,000 vs 1,300), so
- * components take a partial `limits` override and fall back to these defaults.
+ * Components take a partial `limits` override and fall back to these defaults.
+ * The AlimTalk body limit depends on the template: 1,300 characters, or 1,000
+ * when an item list is used (vendors that document "1,000" describe the latter).
  * Sources: NHN Cloud AlimTalk API v2.3, Kakao Business content guide,
  * Ncloud SENS, Solapi BMS guide (checked 2026-10-11).
  */
 
 export const ALIMTALK_LIMITS = {
-  /** 본문 — NHN API 1,300 (some vendors document 1,000) */
+  /** 본문 — 1,300, or 1,000 with an item list */
   content: 1300,
+  contentWithItemList: 1000,
   /** 강조표기 타이틀 / 서브타이틀 */
   title: 50,
   subtitle: 50,
@@ -25,8 +27,9 @@ export const ALIMTALK_LIMITS = {
   itemDescription: 23,
   summaryTitle: 6,
   summaryDescription: 14,
-  /** 부가정보 */
+  /** 부가정보 (+ 채널추가 안내) — 500, or 200 with an item list */
   extra: 500,
+  extraWithItemList: 200,
   /** 채널추가 안내 문구 */
   adText: 80,
   buttonName: 14,
@@ -49,6 +52,7 @@ export const BRAND_MESSAGE_LIMITS = {
   maxButtonsCompact: 2,
   minCarouselCards: 2,
   maxCarouselCards: 6,
+  /** Vendors document 12; Kakao's own guide example uses 14. */
   couponDescription: 12,
   couponDescriptionWide: 18,
 } as const;

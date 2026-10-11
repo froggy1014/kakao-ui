@@ -5,7 +5,8 @@
  * public, so every value carries an evidence grade — see DESIGN.md:
  *   O = official (developers.kakao.com)      T = official theme-creation spec
  *   C = clone approximation                  D = measured on device (iOS @3x)
- *   M = pending on-device measurement
+ *   S = measured from Kakao's own published imagery (App Store screenshots,
+ *       Kakao Business guide)                M = pending on-device measurement
  *
  * Token names follow the KakaoTalk theme slots where one exists
  * (BackgroundStyle-ChatRoom, MessageCellStyle-Send/Receive, InputBarStyle-Chat,
@@ -48,6 +49,8 @@
   --color-kk-chat-sender: var(--kk-chat-sender);
   --color-kk-chat-pill-bg: var(--kk-chat-pill-bg);
   --color-kk-chat-pill-fg: var(--kk-chat-pill-fg);
+  --color-kk-glass-bg: var(--kk-glass-bg);
+  --color-kk-glass-border: var(--kk-glass-border);
 
   /* === Bubbles (MessageCellStyle-Send / -Receive) === */
   --color-kk-bubble-outgoing: var(--kk-bubble-outgoing);
@@ -58,9 +61,11 @@
 
   /* === Input bar (InputBarStyle-Chat) === */
   --color-kk-input-bar-bg: var(--kk-input-bar-bg);
-  --color-kk-input-field-bg: var(--kk-input-field-bg);
   --color-kk-input-icon: var(--kk-input-icon);
   --color-kk-input-placeholder: var(--kk-input-placeholder);
+  --color-kk-input-border: var(--kk-input-border);
+  --color-kk-input-button-bg: var(--kk-input-button-bg);
+  --color-kk-input-emoji-bg: var(--kk-input-emoji-bg);
   --color-kk-send-bg: var(--kk-send-bg);
   --color-kk-send-fg: var(--kk-send-fg);
 
@@ -84,6 +89,10 @@
   --color-kk-biz-muted: var(--kk-biz-muted);
   --color-kk-biz-coupon-bg: var(--kk-biz-coupon-bg);
   --color-kk-biz-coupon-accent: var(--kk-biz-coupon-accent);
+  --color-kk-biz-coupon-border: var(--kk-biz-coupon-border);
+  --color-kk-biz-opt-out: var(--kk-biz-opt-out);
+  --color-kk-biz-badge: var(--kk-biz-badge);
+  --color-kk-biz-badge-fg: var(--kk-biz-badge-fg);
 
   /* === Avatar placeholder === */
   --color-kk-avatar-bg: var(--kk-avatar-bg);
@@ -122,49 +131,57 @@
   --kk-critical: #ff4b3e; /* M */
 
   /* Chat room */
-  --kk-chat-bg: #b2c7d9; /* C — majority of clones */
-  --kk-chat-header-bg: rgba(178, 199, 217, 0.92); /* C — translucent over chat bg */
-  --kk-chat-header-fg: #191919;
-  --kk-chat-meta: rgba(0, 0, 0, 0.45); /* M — timestamp on chat bg */
-  --kk-chat-sender: rgba(0, 0, 0, 0.72); /* M */
+  --kk-chat-bg: #abc1d1; /* S — App Store + Biz guide both render #abc1d1 */
+  --kk-chat-header-bg: transparent; /* S — iOS 26: header floats, only the pills are glass */
+  --kk-chat-header-fg: #191919; /* S */
+  --kk-chat-meta: rgba(0, 0, 0, 0.5); /* S — #535c63 on #abc1d1 */
+  --kk-chat-sender: rgba(0, 0, 0, 0.88); /* S — #1a1d1f on #abc1d1 */
   --kk-chat-pill-bg: rgba(0, 0, 0, 0.15); /* C */
   --kk-chat-pill-fg: #ffffff; /* C */
+  --kk-glass-bg: rgba(255, 255, 255, 0.22); /* S — #bdcedb over #abc1d1 */
+  --kk-glass-border: rgba(255, 255, 255, 0.55); /* S */
 
   /* Bubbles */
   --kk-bubble-outgoing: #fee500; /* O/C */
   --kk-bubble-outgoing-fg: #191919;
-  --kk-bubble-incoming: #ffffff; /* C */
+  --kk-bubble-incoming: #ffffff; /* S */
   --kk-bubble-incoming-fg: #191919;
   --kk-unread: #fee500; /* D (dark) — theme slot -ios-unread-text-color */
 
   /* Input bar */
-  --kk-input-bar-bg: #ffffff;
-  --kk-input-field-bg: #f3f3f3; /* M */
-  --kk-input-icon: #6e6e6e;
-  --kk-input-placeholder: #a0a0a0;
+  --kk-input-bar-bg: #d8e7ef; /* S — floating pill */
+  --kk-input-icon: #191919; /* S */
+  --kk-input-placeholder: #8c9599; /* S */
+  --kk-input-border: rgba(255, 255, 255, 0.5); /* S */
+  --kk-input-button-bg: #ffffff; /* S — + and # circles */
+  --kk-input-emoji-bg: rgba(0, 0, 0, 0.1); /* S — #c1ced5 on the pill */
   --kk-send-bg: #fee500;
   --kk-send-fg: #191919;
 
   /* Lists */
   --kk-list-bg: #ffffff;
   --kk-list-title: #191919;
-  --kk-list-description: #8a8a8a; /* M */
-  --kk-list-meta: #a0a0a0; /* M */
+  --kk-list-description: #767676; /* S */
+  --kk-list-meta: #767676; /* S */
   --kk-list-pressed: rgba(0, 0, 0, 0.05); /* T */
-  --kk-badge: #ff5a3c; /* M */
+  --kk-badge: #f4551e; /* S */
   --kk-badge-fg: #ffffff;
   --kk-divider: rgba(0, 0, 0, 0.09); /* T */
 
   /* Biz Message */
-  --kk-biz-band: #fee500; /* M — "알림톡 도착" band */
+  --kk-biz-band: #fee500; /* S — "알림톡 도착" band */
   --kk-biz-band-fg: #191919;
   --kk-biz-surface: #ffffff;
-  --kk-biz-button-bg: #f3f3f3; /* M */
+  --kk-biz-button-bg: #f5f5f5; /* S */
   --kk-biz-button-fg: #191919;
   --kk-biz-emphasis: #191919;
-  --kk-biz-muted: #8a8a8a;
-  --kk-biz-coupon-bg: #fff8d1; /* M */
-  --kk-biz-coupon-accent: #ff5a3c; /* M */
+  --kk-biz-muted: #8a8a8a; /* S */
+  --kk-biz-coupon-bg: #e6f1fb; /* S — download panel */
+  --kk-biz-coupon-accent: #0a73dc; /* S — download arrow + "COUPON" */
+  --kk-biz-coupon-border: #ebebeb; /* S */
+  --kk-biz-opt-out: rgba(0, 0, 0, 0.6); /* S — #444d54 on #abc1d1 */
+  --kk-biz-badge: #333333; /* S — round "kakao" mark on the corner */
+  --kk-biz-badge-fg: #ffffff;
 
   /* Avatar */
   --kk-avatar-bg: #a9c3e6; /* C — default profile silhouette bg */
@@ -185,9 +202,9 @@
   --kk-radius-biz: 14px;
   --kk-avatar-chat: 34px; /* D */
   --kk-avatar-list: 48px; /* C */
-  --kk-header-height: 52px; /* C */
+  --kk-header-height: 60px; /* D — 44px glass pills + 8px above/below */
   --kk-msg-max-width: min(70%, 264px); /* C */
-  --kk-biz-width: 268px; /* M */
+  --kk-biz-width: 268px; /* S — Biz guide renders at 1.9x: 510px card */
   --kk-gap-grouped: 4px; /* C */
   --kk-gap-meta: 4px; /* D */
   --kk-gap-group: 12px;
@@ -216,12 +233,14 @@
   --kk-critical: #ff6b5e;
 
   --kk-chat-bg: #080808; /* D */
-  --kk-chat-header-bg: rgba(8, 8, 8, 0.85);
-  --kk-chat-header-fg: #ededed;
+  --kk-chat-header-bg: transparent;
+  --kk-chat-header-fg: #ededed; /* D */
   --kk-chat-meta: #9c9c9c; /* D */
   --kk-chat-sender: #cfcfcf; /* D */
   --kk-chat-pill-bg: rgba(255, 255, 255, 0.12);
   --kk-chat-pill-fg: rgba(255, 255, 255, 0.85);
+  --kk-glass-bg: rgba(255, 255, 255, 0.17); /* D — #333333 over #080808 */
+  --kk-glass-border: rgba(255, 255, 255, 0.2); /* D */
 
   --kk-bubble-outgoing: #fee500;
   --kk-bubble-outgoing-fg: #191919;
@@ -230,9 +249,11 @@
   --kk-unread: #fee500; /* D */
 
   --kk-input-bar-bg: #141414; /* D */
-  --kk-input-field-bg: #2e2e2e; /* D — round buttons */
   --kk-input-icon: #f2f2f2; /* D */
   --kk-input-placeholder: #6d6d6d; /* D */
+  --kk-input-border: rgba(255, 255, 255, 0.14); /* D — #353535 rim */
+  --kk-input-button-bg: #2e2e2e; /* D */
+  --kk-input-emoji-bg: rgba(255, 255, 255, 0.11); /* D — #2f2f2f */
 
   --kk-list-bg: #1c1c1e;
   --kk-list-title: #ededed;
@@ -246,7 +267,11 @@
   --kk-biz-button-fg: #ededed;
   --kk-biz-emphasis: #ededed;
   --kk-biz-muted: #a1a1a6;
-  --kk-biz-coupon-bg: #3a3420;
+  --kk-biz-coupon-bg: #1e2a36; /* C */
+  --kk-biz-coupon-accent: #4ea1f5; /* C */
+  --kk-biz-coupon-border: rgba(255, 255, 255, 0.12);
+  --kk-biz-opt-out: #9c9c9c;
+  --kk-biz-badge: #4a4a4a; /* C */
 
   --kk-avatar-bg: #4a5b70;
 }

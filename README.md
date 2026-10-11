@@ -8,6 +8,8 @@ If you send Kakao Biz Messages — from a SaaS dashboard, a CRM, or an internal 
 
 **[Demo](https://katok-ui.jeongmin.dev)** · **[Storybook](https://katok-ui.jeongmin.dev/storybook)** · **[Registry](https://katok-ui.jeongmin.dev/r/registry.json)**
 
+<p align="center"><img src="./docs/demo.gif" width="300" alt="Katok UI demo: typing and sending a message, dark mode, an AlimTalk order notice and a Brand Message ad" /></p>
+
 > "Katok" (카톡) is the everyday nickname for KakaoTalk. Not affiliated with or endorsed by Kakao Corp. No Kakao logos, characters, or font files are included.
 
 ---
@@ -29,14 +31,14 @@ Each component is independent — it brings the files it needs (tokens, icons, s
 | `chat-bubble` | Yellow outgoing / white incoming, first-bubble tail, unread count "1", time, "수정됨" |
 | `message-group` | Consecutive messages: squircle avatar + name on the first, tail on the first, time on the last |
 | `profile-avatar` | Squircle, default silhouette, 2–4 member group-chat composites |
-| `chat-header` | Chat room header (back + unread total, member count) and large-title tab header |
-| `message-input` | Attach, auto-grow, emoji, `#` that turns into the yellow send button; IME-safe Enter |
+| `chat-header` | iOS 26 floating glass pills: back + unread total, centered title + member count, search + menu; large-title tab header |
+| `message-input` | Floating pill: round `+`, auto-grow, emoji, `#` that turns into the yellow send button; IME-safe Enter |
 | `date-separator` | Date pill + `formatKakaoDate()` |
 | `system-message` | Join / leave / invite / deleted notices |
 | `chat-list-item` | Chats tab row: unread badge, mute, pin, member count, `render` polymorphism |
 | `chat-room` | Layout shell: header, message log, input, custom theme background |
-| `alimtalk-bubble` | `messageType` BA/EX/AD/MI × `emphasizeType` NONE/TEXT/IMAGE/ITEM_LIST, buttons, quick replies |
-| `brand-message-bubble` | `chatBubbleType` TEXT/IMAGE/WIDE/CAROUSEL_FEED, coupons, "(광고)" + opt-out footer |
+| `alimtalk-bubble` | `messageType` BA/EX/AD/MI × `emphasizeType` NONE/TEXT/IMAGE/ITEM_LIST, buttons, quick replies — matched against the Kakao Business guide |
+| `brand-message-bubble` | `chatBubbleType` TEXT/IMAGE/WIDE/CAROUSEL_FEED, ticket coupons, opt-out line; `adSenderName()` for the "(광고)" sender label |
 | `biz-button` | Biz Message buttons using API codes (WL, AL, DS, BK, MD, BC, BT, AC, BF, TN, P1–P3) |
 
 ### Biz Message props mirror the API
@@ -54,13 +56,15 @@ Each component is independent — it brings the files it needs (tokens, icons, s
 </MessageGroup>
 ```
 
-Length limits follow the Kakao content guide (title 50, item list header 16, buttons ≤ 5 …). Over-limit text is cut with an ellipsis and warned in development. Sources disagree on a few limits (AlimTalk body 1,000 vs 1,300), so every bubble takes a `limits` override.
+Length limits follow the Kakao Business content guide (body 1,300, or 1,000 with an item list; title 50; item list header 16; buttons ≤ 5 …). Over-limit text is cut with an ellipsis and warned in development, and every bubble takes a `limits` override.
 
 ---
 
 ## Design tokens
 
-No official KakaoTalk design system is public. Tokens are reconstructed and **every value carries an evidence grade** — official (developers.kakao.com), official theme-creation spec, clone approximation, or pending device measurement. Token names follow KakaoTalk's theme slots, so a custom theme is a handful of CSS variables.
+No official KakaoTalk design system is public. Tokens are reconstructed and **every value carries an evidence grade**: official (developers.kakao.com), official theme-creation spec, measured from Kakao's own App Store screenshots and Business guides, measured on device, or clone approximation. Token names follow KakaoTalk's theme slots, so a custom theme is a handful of CSS variables.
+
+Storybook's **Kakao/Reference** pages put each screen next to Kakao's imagery. Those images aren't redistributed: `pnpm refs:fetch` downloads them locally.
 
 See [`DESIGN.md`](./DESIGN.md).
 
@@ -80,6 +84,7 @@ pnpm storybook      # http://localhost:6006
 pnpm dev            # landing + registry routes
 pnpm test           # unit tests (limits, coupon formats)
 pnpm test:stories   # render every story in headless Chromium
+pnpm refs:fetch     # download Kakao reference images for Kakao/Reference (local only)
 ```
 
 ---

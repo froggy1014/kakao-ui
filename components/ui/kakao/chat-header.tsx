@@ -14,6 +14,8 @@ interface ChatHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>, "title
   title: React.ReactNode;
   /** Group chats show the member count next to the title. */
   memberCount?: number;
+  /** Second line under the title, e.g. "공유하기" or a status. */
+  subtitle?: React.ReactNode;
   /** Total unread chats, shown beside the back chevron. */
   unreadTotal?: number;
   onBack?: () => void;
@@ -23,13 +25,18 @@ interface ChatHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>, "title
   actions?: React.ReactNode;
 }
 
+const GLASS =
+  "border border-kk-glass-border bg-kk-glass-bg shadow-[0_2px_12px_rgba(0,0,0,0.08)] backdrop-blur-xl backdrop-saturate-150";
+
 function IconButton({
   label,
   onClick,
+  size = 40,
   children,
 }: {
   label: string;
   onClick?: () => void;
+  size?: number;
   children: React.ReactNode;
 }) {
   return (
@@ -37,7 +44,8 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="flex h-[36px] w-[36px] items-center justify-center rounded-full outline-none transition-opacity hover:opacity-70 focus-visible:ring-2 focus-visible:ring-kk-yellow"
+      style={{ width: size, height: size }}
+      className="flex shrink-0 items-center justify-center rounded-full outline-none transition-opacity hover:opacity-70 focus-visible:ring-2 focus-visible:ring-kk-yellow"
     >
       {children}
     </button>
@@ -46,16 +54,16 @@ function IconButton({
 
 const ChatHeader = React.forwardRef<HTMLElement, ChatHeaderProps>(
   (
-    { className, variant = "chat", title, memberCount, unreadTotal, onBack, onSearch, onMenu, actions, ...props },
+    { className, variant = "chat", title, memberCount, subtitle, unreadTotal, onBack, onSearch, onMenu, actions, ...props },
     ref
   ) => {
     const trailing = actions ?? (
       <>
         <IconButton label="검색" onClick={onSearch}>
-          <SearchIcon size={22} strokeWidth={1.8} />
+          <SearchIcon size={23} strokeWidth={1.9} />
         </IconButton>
         <IconButton label="메뉴" onClick={onMenu}>
-          <MenuIcon size={22} strokeWidth={1.8} />
+          <MenuIcon size={23} strokeWidth={1.9} />
         </IconButton>
       </>
     );
@@ -76,35 +84,50 @@ const ChatHeader = React.forwardRef<HTMLElement, ChatHeaderProps>(
       );
     }
 
+    const hasCount = !!unreadTotal && unreadTotal > 0;
+
+    // iOS 26 layout: the bar itself is transparent; the back button and the
+    // trailing actions are floating glass pills, the title sits centered.
     return (
       <header
         ref={ref}
         className={cn(
-          "font-kk flex h-[var(--kk-header-height)] w-full items-center gap-[2px] bg-kk-chat-header-bg px-[6px] text-kk-chat-header-fg backdrop-blur-md",
+          "font-kk flex h-[var(--kk-header-height)] w-full items-center gap-[8px] bg-kk-chat-header-bg px-[16px] text-kk-chat-header-fg",
           className
         )}
         {...props}
       >
-        <button
-          type="button"
-          aria-label="뒤로"
-          onClick={onBack}
-          className="flex h-[36px] items-center rounded-full pr-[4px] outline-none hover:opacity-70 focus-visible:ring-2 focus-visible:ring-kk-yellow"
-        >
-          <ChevronLeftIcon size={26} strokeWidth={1.8} />
-          {!!unreadTotal && unreadTotal > 0 && (
-            <span className="-ml-[3px] text-[15px] font-medium">
-              {unreadTotal > 999 ? "999+" : unreadTotal}
-            </span>
-          )}
-        </button>
-        <h1 className="flex min-w-0 flex-1 items-baseline gap-[5px] px-[2px] text-[16px] font-semibold tracking-[-0.01em]">
-          <span className="truncate">{title}</span>
-          {memberCount != null && (
-            <span className="shrink-0 text-[15px] font-normal opacity-50">{memberCount}</span>
-          )}
-        </h1>
-        <div className="flex shrink-0 items-center">{trailing}</div>
+        <div className="flex flex-1 basis-0 justify-start">
+          <button
+            type="button"
+            aria-label={hasCount ? `뒤로, 안 읽은 채팅 ${unreadTotal}개` : "뒤로"}
+            onClick={onBack}
+            className={cn(
+              GLASS,
+              "flex h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full outline-none hover:opacity-80 focus-visible:ring-2 focus-visible:ring-kk-yellow",
+              hasCount && "gap-[2px] pl-[10px] pr-[14px]"
+            )}
+          >
+            <ChevronLeftIcon size={26} strokeWidth={1.9} />
+            {hasCount && (
+              <span className="text-[17px] tabular-nums">{unreadTotal > 999 ? "999+" : unreadTotal}</span>
+            )}
+          </button>
+        </div>
+        <div className="flex min-w-0 shrink flex-col items-center text-center">
+          <h1 className="flex max-w-full items-baseline gap-[5px] text-[17px] font-bold tracking-[-0.01em]">
+            <span className="truncate">{title}</span>
+            {memberCount != null && (
+              <span className="shrink-0 font-semibold opacity-50">{memberCount}</span>
+            )}
+          </h1>
+          {subtitle && <p className="max-w-full truncate text-[13px] opacity-70">{subtitle}</p>}
+        </div>
+        <div className="flex flex-1 basis-0 justify-end">
+          <div className={cn(GLASS, "flex h-[44px] shrink-0 items-center rounded-full px-[4px]")}>
+            {trailing}
+          </div>
+        </div>
       </header>
     );
   }

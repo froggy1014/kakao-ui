@@ -49,6 +49,8 @@ export const SmileIcon = strokeIcon(
     <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" />
   </>
 );
+/** Face without the outline — sits inside the input bar's round emoji button. */
+export const EmojiFaceIcon = strokeIcon("EmojiFaceIcon", <path d="M7 13s1.8 3 5 3 5-3 5-3M8.5 8.5v1M15.5 8.5v1" />);
 export const HashIcon = strokeIcon("HashIcon", <path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18" />);
 export const ArrowUpIcon = strokeIcon("ArrowUpIcon", <path d="m5 12 7-7 7 7M12 19V5" />);
 export const BellOffIcon = strokeIcon(
@@ -66,6 +68,7 @@ export const CalendarIcon = strokeIcon(
     <path d="M16 2v4M8 2v4M3 10h18" />
   </>
 );
+export const DownloadIcon = strokeIcon("DownloadIcon", <path d="M12 4v11m-5-5 5 5 5-5M5 20h14" />);
 export const TicketIcon = strokeIcon(
   "TicketIcon",
   <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2ZM13 5v2M13 17v2M13 11v2" />

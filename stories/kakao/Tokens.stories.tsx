@@ -2,8 +2,10 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 /**
  * Color tokens with their evidence grade:
- * O official · T theme-creation spec · C clone approximation · D measured on device ·
- * M pending device measurement. "C/D" = light approximated, dark measured.
+ * O official · T theme-creation spec · S measured from Kakao's published imagery
+ * (App Store screenshots, Kakao Business guide) · D measured on device ·
+ * C clone approximation · M pending measurement. "S/D" = light from Kakao imagery,
+ * dark measured on device.
  * Toggle the toolbar theme to see dark values.
  */
 const meta: Meta = {
@@ -26,10 +28,11 @@ const GROUPS: { title: string; tokens: [string, string][] }[] = [
   {
     title: "Chat room",
     tokens: [
-      ["--kk-chat-bg", "C/D"],
-      ["--kk-chat-header-bg", "C"],
-      ["--kk-chat-meta", "D"],
-      ["--kk-chat-sender", "D"],
+      ["--kk-chat-bg", "S/D"],
+      ["--kk-glass-bg", "S/D"],
+      ["--kk-glass-border", "S/D"],
+      ["--kk-chat-meta", "S/D"],
+      ["--kk-chat-sender", "S/D"],
       ["--kk-chat-pill-bg", "C"],
       ["--kk-chat-pill-fg", "C"],
     ],
@@ -39,7 +42,7 @@ const GROUPS: { title: string; tokens: [string, string][] }[] = [
     tokens: [
       ["--kk-bubble-outgoing", "O"],
       ["--kk-bubble-outgoing-fg", "T"],
-      ["--kk-bubble-incoming", "C/D"],
+      ["--kk-bubble-incoming", "S/D"],
       ["--kk-bubble-incoming-fg", "T"],
       ["--kk-unread", "D"],
     ],
@@ -47,9 +50,12 @@ const GROUPS: { title: string; tokens: [string, string][] }[] = [
   {
     title: "Input bar",
     tokens: [
-      ["--kk-input-bar-bg", "D"],
-      ["--kk-input-field-bg", "M"],
-      ["--kk-input-icon", "D"],
+      ["--kk-input-bar-bg", "S/D"],
+      ["--kk-input-border", "S/D"],
+      ["--kk-input-button-bg", "S/D"],
+      ["--kk-input-emoji-bg", "S/D"],
+      ["--kk-input-icon", "S/D"],
+      ["--kk-input-placeholder", "S/D"],
       ["--kk-send-bg", "O"],
     ],
   },
@@ -58,21 +64,22 @@ const GROUPS: { title: string; tokens: [string, string][] }[] = [
     tokens: [
       ["--kk-list-bg", "M"],
       ["--kk-list-title", "T"],
-      ["--kk-list-description", "M"],
-      ["--kk-list-meta", "M"],
+      ["--kk-list-description", "S"],
+      ["--kk-list-meta", "S"],
       ["--kk-list-pressed", "T"],
-      ["--kk-badge", "M"],
+      ["--kk-badge", "S"],
       ["--kk-divider", "T"],
     ],
   },
   {
     title: "Biz Message",
     tokens: [
-      ["--kk-biz-band", "M"],
+      ["--kk-biz-band", "S"],
       ["--kk-biz-surface", "M"],
-      ["--kk-biz-button-bg", "M"],
-      ["--kk-biz-coupon-bg", "M"],
-      ["--kk-biz-coupon-accent", "M"],
+      ["--kk-biz-button-bg", "S"],
+      ["--kk-biz-badge", "S"],
+      ["--kk-biz-coupon-bg", "S"],
+      ["--kk-biz-coupon-accent", "S"],
     ],
   },
 ];
@@ -83,7 +90,8 @@ const GRADE_STYLE: Record<string, string> = {
   C: "bg-amber-100 text-amber-800",
   M: "bg-rose-100 text-rose-800",
   D: "bg-violet-100 text-violet-800",
-  "C/D": "bg-violet-100 text-violet-800",
+  S: "bg-teal-100 text-teal-800",
+  "S/D": "bg-teal-100 text-teal-800",
 };
 
 export const Colors: Story = {

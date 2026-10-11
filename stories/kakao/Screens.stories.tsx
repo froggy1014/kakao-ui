@@ -1,6 +1,8 @@
+import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 import { AlimtalkBubble } from "@/components/ui/kakao/alimtalk-bubble";
-import { BrandMessageBubble } from "@/components/ui/kakao/brand-message-bubble";
+import { BrandMessageBubble, adSenderName } from "@/components/ui/kakao/brand-message-bubble";
 import { ChatBubble } from "@/components/ui/kakao/chat-bubble";
 import { ChatHeader } from "@/components/ui/kakao/chat-header";
 import { ChatListItem } from "@/components/ui/kakao/chat-list-item";
@@ -39,6 +41,79 @@ export const OneOnOneChat: Story = {
       </MessageGroup>
     </ChatRoom>
   ),
+};
+
+type LiveMessage = { id: number; from: "me" | "minji"; text: string; time: string; unread?: number };
+
+const LIVE_START: LiveMessage[] = [
+  { id: 1, from: "minji", text: "오늘 저녁 뭐 먹을까?", time: "오후 6:02" },
+  { id: 2, from: "minji", text: "회사 앞 국밥집 어때?", time: "오후 6:02" },
+];
+
+/** Type and press Enter: your message arrives with an unread "1", then a reply comes in. */
+function LiveChatDemo() {
+  const [messages, setMessages] = React.useState(LIVE_START);
+  const nextId = React.useRef(LIVE_START.length + 1);
+  const timers = React.useRef<number[]>([]);
+  React.useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  const send = (text: string) => {
+    const id = nextId.current++;
+    setMessages((m) => [...m, { id, from: "me", text, time: "오후 6:03", unread: 1 }]);
+    timers.current.push(
+      window.setTimeout(() => {
+        setMessages((m) => m.map((x) => (x.id === id ? { ...x, unread: undefined } : x)));
+      }, 900),
+      window.setTimeout(() => {
+        setMessages((m) => [...m, { id: nextId.current++, from: "minji", text: "콜 👍 10분 뒤에 1층!", time: "오후 6:03" }]);
+      }, 1600)
+    );
+  };
+
+  // Consecutive messages from one side share a group (tail on the first, time on the last).
+  const groups: LiveMessage[][] = [];
+  for (const m of messages) {
+    const last = groups[groups.length - 1];
+    if (last && last[0].from === m.from && last[0].time === m.time) last.push(m);
+    else groups.push([m]);
+  }
+
+  return (
+    <ChatRoom header={<ChatHeader title={PEOPLE.minji.name} unreadTotal={4} />} input={<MessageInput onSend={send} />}>
+      <DateSeparator date="2026년 10월 11일 일요일" />
+      {groups.map((g) => {
+        const tail = g[g.length - 1];
+        return (
+          <MessageGroup
+            key={g[0].id}
+            variant={g[0].from === "me" ? "outgoing" : "incoming"}
+            sender={g[0].from === "minji" ? PEOPLE.minji : undefined}
+            timestamp={tail.time}
+            unreadCount={tail.unread}
+          >
+            {g.map((m) => (
+              <ChatBubble key={m.id}>{m.text}</ChatBubble>
+            ))}
+          </MessageGroup>
+        );
+      })}
+    </ChatRoom>
+  );
+}
+
+export const LiveChat: Story = {
+  render: () => <LiveChatDemo />,
+};
+
+/** Same screen, driven by a test: type, send, wait for the reply. */
+export const LiveChatSendAndReply: Story = {
+  render: () => <LiveChatDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByRole("textbox", { name: "메시지" }), "좋아 거기로 가자{enter}", { delay: 90 });
+    await expect(canvas.getByText("좋아 거기로 가자")).toBeInTheDocument();
+    await expect(await canvas.findByText("콜 👍 10분 뒤에 1층!", {}, { timeout: 3000 })).toBeInTheDocument();
+  },
 };
 
 export const GroupChat: Story = {
@@ -137,12 +212,14 @@ export const AlimtalkChannel: Story = {
   ),
 };
 
+const AD_SENDER = { ...CHANNELS.shop, name: adSenderName(CHANNELS.shop.name) };
+
 /** A brand channel room receiving Brand Messages (ads). */
 export const BrandMessageChannel: Story = {
   render: () => (
     <ChatRoom header={<ChatHeader title={CHANNELS.shop.name} />} input={<MessageInput />}>
       <DateSeparator date="2026년 10월 11일 일요일" />
-      <MessageGroup sender={CHANNELS.shop}>
+      <MessageGroup sender={AD_SENDER}>
         <BrandMessageBubble
           chatBubbleType="WIDE"
           isAd
@@ -155,7 +232,7 @@ export const BrandMessageChannel: Story = {
           timestamp="오전 11:00"
         />
       </MessageGroup>
-      <MessageGroup sender={CHANNELS.shop}>
+      <MessageGroup sender={AD_SENDER}>
         <BrandMessageBubble
           chatBubbleType="CAROUSEL_FEED"
           isAd
