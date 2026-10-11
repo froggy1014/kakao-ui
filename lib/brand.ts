@@ -3,7 +3,7 @@
  *
  * These hardcode colors instead of reading CSS tokens — icons and OG images
  * render outside the document, so CSS variables resolve to nothing.
- * The mark is an original speech-bubble glyph, not a Kakao logo.
+ * The mark is an original bot-face glyph, not a Kakao logo.
  */
 export const BRAND = {
   accent: "#fee500",
@@ -16,12 +16,17 @@ export const BRAND = {
 export const SITE_URL = "https://katok-ui.jeongmin.dev";
 export const REPO_URL = "https://github.com/froggy1014/katok-ui";
 
-/** Rounded speech bubble with a tail, 24×24 viewBox. */
+/**
+ * Bot face: a square speech bubble with two eyes (shared with kakao-bot).
+ * The eyes are holes (even-odd), so the tile color shows through.
+ * Deliberately unlike KakaoTalk's rounded "TALK" bubble.
+ */
+export const LOGO_VIEWBOX = "10 12.5 44 44";
 export const LOGO_PATH =
-  "M12 3C6.75 3 2.5 6.36 2.5 10.5c0 2.62 1.7 4.92 4.27 6.26l-.9 3.3a.4.4 0 0 0 .6.45l3.86-2.56c.54.07 1.1.1 1.67.1 5.25 0 9.5-3.36 9.5-7.55S17.25 3 12 3Z";
+  "M14 18h36v25H32L21 51v-8h-7zM22 30a3 3 0 1 0 6 0a3 3 0 1 0-6 0zM36 30a3 3 0 1 0 6 0a3 3 0 1 0-6 0z";
 
 export function logoSvg({ size, fill = BRAND.onAccent }: { size: number; fill?: string }) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="${fill}"><path d="${LOGO_PATH}"/></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${LOGO_VIEWBOX}" fill="${fill}"><path fill-rule="evenodd" d="${LOGO_PATH}"/></svg>`;
 }
 
 export function logoDataUri(opts: { size: number; fill?: string }) {
